@@ -1,16 +1,19 @@
 <template>
   <div class="container p-3 mb-2 text-white">
     <HeaderComponent />
+    <CardComponent />
   </div>
 </template>
 
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue';
+import CardComponent from './components/CardComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    HeaderComponent
+    HeaderComponent,
+    CardComponent
   }
 }
 </script>

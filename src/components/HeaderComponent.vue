@@ -18,13 +18,16 @@ import BtcRateHeader from '@/components/BtcRateHeader.vue';
 import axiosInstance from '../axios-config';
 
 export default {
+  name: 'HeaderComponent',
   components: {
     RunningLineHeader,
     BtcRateHeader
   },
-  name: 'HeaderComponent',
   data() {
     return {
+      bgColor: 'var(--bg-grey)',
+      selectBgColor: 'var(--bg-dark)',
+      txtColor: 'var(--text-light)',
       infoRateUSD: 'Choose rate to USD',
       selectValue: '',
       imageSrc: require('@/assets/dark-mode.svg')
@@ -63,14 +66,7 @@ export default {
 
 <style scoped>
 .content {
-  /* background-color: var(--bg-grey); */
-  background-color: #212529;
-  color: #c6c9d2;
-}
-
-.content-header {
-  /* color: var(--text-light); */
-  color: #c6c9d2;
+  background-color: v-bind(bgColor);
 }
 
 #select-header {
@@ -84,9 +80,7 @@ select {
   width: 200px;
   height: 50px;
   border-radius: 5px;
-  /* background-color: var(--bg-dark);
-  color: var(--text-light); */
-  background-color: #212529;
-  color: #c6c9d2;
+  background-color: v-bind(selectBgColor);
+  color: v-bind(txtColor);
 }
 </style>

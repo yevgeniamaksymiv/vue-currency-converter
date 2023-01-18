@@ -23,7 +23,8 @@ export default {
       eur: '',
       gbr: '',
       cny: '',
-      aud: ''
+      aud: '',
+      txtColor: 'var(--text-light)'
     }
   },
 
@@ -56,6 +57,7 @@ export default {
   position: relative;
   min-height: 20px;
   overflow: hidden;
+  color: v-bind(txtColor);
 }
 
 .running-line-wrapper-first {
