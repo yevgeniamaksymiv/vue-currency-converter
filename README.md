@@ -1,4 +1,4 @@
-# vue-test-project
+# vue-currency-converter
 
 ## Project setup
 ```
