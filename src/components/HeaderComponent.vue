@@ -2,11 +2,11 @@
   <div class="content p-3 text-center">
     <h1>Currency Converter</h1>
     <span id="header-rate" class="pe-3">{{ infoRateUSD }}</span>
-    <select id="select-header" @change="selectOnChange()" v-model="selectValue">
+    <select id="select-header" @change="selectOnChange" v-model="selectValue">
       <option selected>Select</option>
     </select>
     <BtcRateHeader />
-    <img id="theme-icon" width="24" height="24" alt="theme svg" />
+    <img :src="imageSrc" id="theme-icon" width="24" height="24" alt="theme svg" />
     <hr />
     <RunningLineHeader />
   </div>
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       infoRateUSD: 'Choose rate to USD',
-      selectValue: ''
+      selectValue: '',
+      imageSrc: require('@/assets/dark-mode.svg')
     }
   },
 
@@ -36,6 +37,7 @@ export default {
         params: {
           base: 'USD',
           symbols: 'UAH,EUR,GBP',
+          places: 4
         },
       });
       const rates = Object.entries(response.data.rates);
@@ -52,8 +54,8 @@ export default {
   },
 
   methods: {
-    selectOnChange() {
-      this.infoRateUSD = `1 USD = ${Number(this.selectValue).toFixed(4)}`;
+    selectOnChange(e) {
+      this.infoRateUSD = `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
     }
   }
 }
