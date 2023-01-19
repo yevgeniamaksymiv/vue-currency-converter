@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import axiosInstance from '../axios-config';
+import axiosInstance from '../../axios-config';
 
 export default {
-  name: 'RunningLineHeader',
+  name: 'RunningLine',
   data() {
     return {
       usd: '',

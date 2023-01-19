@@ -1,21 +1,21 @@
 <template>
   <div class="card text-center mt-3 p-4">
     <div class="card-body">
-        <SelectsSectionCard />
-        <InputsSectionCard />
+        <SelectsSection />
+        <InputsSection />
     </div>
   </div>
 </template>
 
 <script>
-import SelectsSectionCard from './SelectsSectionCard.vue';
-import InputsSectionCard from './InputsSectionCard.vue';
+import SelectsSection from './SelectsSection.vue';
+import InputsSection from './InputsSection.vue';
 
 export default {
   name: 'CardComponent',
   components: {
-    SelectsSectionCard,
-    InputsSectionCard
+    SelectsSection,
+    InputsSection
   },
   data() {
     return {

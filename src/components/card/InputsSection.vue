@@ -1,7 +1,7 @@
 <template>
   <div>
     <input id="input" class="mt-3 me-4 p-2" placeholder="Amount" />
-    <input id="date" type="date" min="2000-01-01" class="mt-3 p-2" ref="date" v-model="inputDate"/>
+    <input id="date" type="date" min="2000-01-01" class="mt-3 p-2" @change="dateOnChange" ref="date" v-model="inputDate"/>
     <small id="error-input"></small>
     <button type="button" class="btn btn-primary ps-3 pe-3 m-3" id="btn-convert">
       Convert
@@ -16,8 +16,11 @@
 </template>
 
 <script>
+// import { getAllCurrencies } from '@/helpers';
+
 export default {
-  name: 'InputsSectionCard',
+  name: 'InputsSection',
+
   data() {
     return {
       bgColor: 'var(--bg-dark)',
@@ -37,9 +40,15 @@ export default {
       const date = new Date().toLocaleDateString();
       this.inputDate = date.split('.').reverse().join('-');
       this.$refs.date.max = this.inputDate;
+    },
+    
+    dateOnChange() {
+      const date = new Date().toLocaleDateString();
+      if (date.split('.').reverse().join('-') !== this.inputDate) {
+        console.log(this.inputDate)
+      }
     }
   }
-
 }
 
 </script>
