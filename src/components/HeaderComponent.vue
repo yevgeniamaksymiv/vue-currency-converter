@@ -2,7 +2,7 @@
   <div class="content p-3 text-center">
     <h1>Currency Converter</h1>
     <span id="header-rate" class="pe-3">{{ infoRateUSD }}</span>
-    <select id="select-header" @change="selectOnChange" v-model="selectValue">
+    <select id="select-header" ref="select" @change="selectOnChange" v-model="selectValue">
       <option selected>Select</option>
     </select>
     <BtcRateHeader />
@@ -16,6 +16,15 @@
 import RunningLineHeader from '@/components/RunningLineHeader.vue';
 import BtcRateHeader from '@/components/BtcRateHeader.vue';
 import axiosInstance from '../axios-config';
+
+function appendOptionsToSelectTag(arr2d, tag) {
+  return arr2d.forEach((arr) => {
+    const option = document.createElement('option');
+    option.appendChild(document.createTextNode(arr[0]));
+    option.value = arr[1];
+    tag.appendChild(option);
+  });
+}
 
 export default {
   name: 'HeaderComponent',
@@ -34,29 +43,26 @@ export default {
     }
   },
 
-  async mounted() {
-    try {
-      const response = await axiosInstance.get('/latest', {
-        params: {
-          base: 'USD',
-          symbols: 'UAH,EUR,GBP',
-          places: 4
-        },
-      });
-      const rates = Object.entries(response.data.rates);
-      rates.forEach((rate) => {
-        const option = document.createElement('option');
-        option.appendChild(document.createTextNode(rate[0]));
-        option.value = rate[1];
-        const select = document.getElementById('select-header');
-        select.appendChild(option);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+  mounted() {
+    return this.getUSDRate(this.$refs.select);
   },
 
   methods: {
+    async getUSDRate(parentTag) {
+      try {
+        const response = await axiosInstance.get('/latest', {
+          params: {
+            base: 'USD',
+            symbols: 'UAH,EUR,GBP',
+            places: 4
+          },
+        });
+        const rates = Object.entries(response.data.rates);
+        appendOptionsToSelectTag(rates, parentTag);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     selectOnChange(e) {
       this.infoRateUSD = `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
     }

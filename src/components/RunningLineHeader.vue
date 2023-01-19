@@ -1,7 +1,7 @@
 <template>
   <div class="running-line">
     <div class="text-center running-line-wrapper-first">
-      <span id="current-date" class="content-header pe-3">Current rate for {{ new Date().toLocaleDateString() }}:
+      <span id="current-date" class="content-header pe-3">Current rate for {{ getDate }}:
       </span>
       <span id="USD-rate" class="content-header pe-3">1 USD = {{ usd }} UAH</span>
       <span id="EUR-rate" class="content-header pe-3">1 EUR = {{ eur }} UAH</span>
@@ -28,24 +28,36 @@ export default {
     }
   },
 
-  async mounted() {
-    try {
-      const response = await axiosInstance.get('/latest', {
-        params: {
-          base: 'UAH',
-          symbols: 'USD,EUR,GBP,CNY,AUD',
-        },
-      });
-      const rates = Object.values(response.data.rates).map((rate) =>
-        (1 / Number(rate)).toFixed(2)
-      );
-      this.eur = rates[2];
-      this.usd = rates[4];
-      this.gbr = rates[3];
-      this.cny = rates[1];
-      this.aud = rates[0];
-    } catch (error) {
-      console.error(error);
+  mounted() {
+    return this.getDailyRate();
+  },
+
+  methods: {
+    async getDailyRate() {
+      try {
+        const response = await axiosInstance.get('/latest', {
+          params: {
+            base: 'UAH',
+            symbols: 'USD,EUR,GBP,CNY,AUD',
+          },
+        });
+        const rates = Object.values(response.data.rates).map((rate) =>
+          (1 / Number(rate)).toFixed(2)
+        );
+        this.eur = rates[2];
+        this.usd = rates[4];
+        this.gbr = rates[3];
+        this.cny = rates[1];
+        this.aud = rates[0];
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+
+  computed: {
+    getDate() {
+      return new Date().toLocaleDateString();
     }
   }
 

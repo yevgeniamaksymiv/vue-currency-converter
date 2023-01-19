@@ -12,19 +12,25 @@ export default {
       btcRate: ''
     }
   },
-  async mounted() {
-    try {
-      const response = await axiosInstance.get('/latest', {
-        params: {
-          base: 'BTC',
-          symbols: 'USD',
-          source: 'crypto',
-        },
-      });
-      const rates = Object.entries(response.data.rates);
-      this.btcRate = ` 1 BTC = ${Number(rates[0][1]).toFixed(2)} USD`;
-    } catch (error) {
-      console.error(error);
+  mounted() {
+    return this.getBTCtoUSD();
+  },
+
+  methods: {
+    async getBTCtoUSD() {
+      try {
+        const response = await axiosInstance.get('/latest', {
+          params: {
+            base: 'BTC',
+            symbols: 'USD',
+            source: 'crypto',
+          },
+        });
+        const rates = Object.entries(response.data.rates);
+        this.btcRate = ` 1 BTC = ${Number(rates[0][1]).toFixed(2)} USD`;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 }

@@ -53,6 +53,6 @@ export default {
   padding: 0;
   min-height: 100vh;
   box-sizing: border-box;
-  text-align: center;
+  /* text-align: center; */
 }
 </style>
