@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import RunningLine from '@/components/header/RunningLine.vue';
-import BtcRate from '@/components/header/BtcRate.vue';
+import RunningLine from './RunningLine.vue';
+import BtcRate from './BtcRate.vue';
 import { getUSDRate } from '@/helpers/index';
 
 export default {
