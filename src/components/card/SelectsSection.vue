@@ -16,6 +16,9 @@ import { getAllCurrencies } from '@/helpers/index';
 
 export default {
   name: 'SelectsSection',
+  props: [
+    'rateFrom', 'rateTo', 'CurrencyFrom', 'CurrencyTo'
+  ],
   
   data() {
     return {
@@ -24,10 +27,10 @@ export default {
       imgSrc: require('@/assets/arrows.svg'),
       selectFromValue: '',
       selectToValue: '',
-      rateFrom: '',
-      rateTo: '',
-      currencyFrom: '',
-      currencyTo: ''
+      // rateFrom: '',
+      // rateTo: '',
+      // currencyFrom: '',
+      // currencyTo: ''
     }
   },
 
@@ -37,8 +40,13 @@ export default {
   },
 
   methods: {
+    change() {
+      this.$emit('changeRateFrom', this.selectFromValue);
+    },
+
     selectFromOnChange() {
-      this.rateFrom = this.selectFromValue;
+      this.change()
+      // this.rateFrom = this.selectFromValue;
       this.currencyFrom = this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text;
       console.log('1 ', this.rateFrom, this.currencyFrom)
     },

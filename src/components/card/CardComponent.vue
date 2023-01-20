@@ -1,8 +1,8 @@
 <template>
   <div class="card text-center mt-3 p-4">
     <div class="card-body">
-        <SelectsSection />
-        <InputsSection />
+      <SelectsSection v-on:changeRateFrom="changeRateFrom" v-model:rateFrom="rateFrom"/>
+      <InputsSection />
     </div>
   </div>
 </template>
@@ -19,9 +19,20 @@ export default {
   },
   data() {
     return {
-      bgColor: 'var(--bg-grey)'
+      bgColor: 'var(--bg-grey)',
+      rateFrom: 'rF',
+      rateTo: '',
+      currencyFrom: '',
+      currencyTo: ''
     }
+  },
+  methods: {
+    changeRateFrom(val) {
+      this.rateFrom = val;
+      console.log('rateFrom', this.rateFrom)
+    }  
   }
+
 }
 
 </script>

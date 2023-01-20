@@ -36,7 +36,7 @@ async function getAllCurrencies(parentTag, historyDate = null) {
       console.error(error);
     }
   }
-  
+
   try {
     const response = await axiosInstance.get('/latest');
     const rates = Object.entries(response.data.rates);
@@ -47,7 +47,41 @@ async function getAllCurrencies(parentTag, historyDate = null) {
   }
 }
 
+function createListItem(id, btn, list) {
+  const li = document.createElement('li');
+  li.id = id;
+  li.innerHTML = localStorage.getItem(id);
+
+  const btnDeleteItem = document.createElement('button');
+  btnDeleteItem.className = 'btn-delete-item';
+  btnDeleteItem.id = li.id;
+
+  const icon = document.createElement('span');
+  icon.className = 'material-icons';
+  icon.classList.add('icon-delete');
+  icon.appendChild(document.createTextNode('cancel'));
+  btnDeleteItem.appendChild(icon);
+  li.appendChild(btnDeleteItem);
+  list.appendChild(li);
+
+  btnDeleteItem.onclick = () => {
+    li.innerHTML = '';
+    localStorage.removeItem(`${id}`);
+    if (Object.keys(localStorage).length === 0) {
+      btn.remove();
+    }
+  };
+}
+
+function addItemToList(list, date, amount, currency1, currency2, result) {
+  const uniqueId = Math.random().toString(16).slice(2);
+  const liContent = `<small>${date}:</small> ${amount} ${currency1} = ${result} ${currency2}`;
+  localStorage.setItem(`${uniqueId}`, `${liContent}`);
+  createListItem(uniqueId, list);
+}
+
 export { 
   getUSDRate, 
-  getAllCurrencies 
+  getAllCurrencies,
+  addItemToList 
 }
