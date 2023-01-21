@@ -47,7 +47,7 @@ async function getAllCurrencies(parentTag, historyDate = null) {
   }
 }
 
-function createListItem(id, btn, list) {
+function createListItem(id, list) {
   const li = document.createElement('li');
   li.id = id;
   li.innerHTML = localStorage.getItem(id);
@@ -67,9 +67,9 @@ function createListItem(id, btn, list) {
   btnDeleteItem.onclick = () => {
     li.innerHTML = '';
     localStorage.removeItem(`${id}`);
-    if (Object.keys(localStorage).length === 0) {
-      btn.remove();
-    }
+    // if (Object.keys(localStorage).length === 0) {
+    //   btn.remove();
+    // }
   };
 }
 

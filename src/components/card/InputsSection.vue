@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       bgColor: 'var(--bg-dark)',
+      bgColorDel: 'var(--bg-grey)',
       borderColor: 'var(--text-light)',
       txtColor: 'var(--text-light)',
       liColor: 'var(--text-blue)',
@@ -34,7 +35,7 @@ export default {
       inputValue: '',
       inputDate: '',
       errorMsgInput: '',
-      errorMsgHistory: ''
+      errorMsgHistory: '',
     }
   },
 
@@ -63,8 +64,6 @@ export default {
     },
 
     convertOnClick() {
-      console.log('convert')
-      console.log('rate', this.rateFrom, this.rateTo, this.currencyFrom, this.currencyTo)
       const regex = /^\d+$/;
       if (!regex.test(this.inputValue) || this.inputValue.length > 12) {
         this.errorMsg =
@@ -72,12 +71,12 @@ export default {
         setTimeout(() => (this.errorMsg = ''), 4000);
         return;
       }
-      // if (this.rateFrom && this.rateTo) {
-      //   const convertResult = ((this.rateTo / this.rateFrom) * this.inputValue).toFixed(4);
+      if (this.$store.state.rateFrom && this.$store.state.rateTo) {
+        const convertResult = ((this.$store.state.rateTo / this.$store.state.rateFrom) * this.inputValue).toFixed(4);
 
-      //   addItemToList(this.$refs.list, this.inputDate, this.inputValue, this.currencyFrom, this.currencyTo, convertResult);
-      //   this.inputValue = '';
-      // }
+        addItemToList(this.$refs.list, this.inputDate, this.inputValue, this.$store.state.currencyFrom, this.$store.state.currencyTo, convertResult);
+        this.inputValue = '';
+      }
     }
   }
 }
@@ -113,5 +112,25 @@ ul li {
 #error-input {
   display: block;
   color: v-bind(errColor);
+}
+
+.btn-delete-item {
+  background-color: v-bind(bgColorDel);
+  border: none;
+}
+
+.icon-delete {
+  position: relative;
+  top: 6px;
+  margin-left: 10px;
+  color: v-bind(errColor);
+}
+
+.icon-delete:hover {
+  opacity: .5;
+}
+
+small {
+  color: v-bind(txtColor);
 }
 </style>

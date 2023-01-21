@@ -16,10 +16,7 @@ import { getAllCurrencies } from '@/helpers/index';
 
 export default {
   name: 'SelectsSection',
-  props: [
-    'rateFrom', 'rateTo', 'CurrencyFrom', 'CurrencyTo'
-  ],
-  
+
   data() {
     return {
       selectBgColor: 'var(--bg-dark)',
@@ -27,10 +24,6 @@ export default {
       imgSrc: require('@/assets/arrows.svg'),
       selectFromValue: '',
       selectToValue: '',
-      // rateFrom: '',
-      // rateTo: '',
-      // currencyFrom: '',
-      // currencyTo: ''
     }
   },
 
@@ -40,26 +33,23 @@ export default {
   },
 
   methods: {
-    change() {
-      this.$emit('changeRateFrom', this.selectFromValue);
-    },
-
     selectFromOnChange() {
-      this.change()
-      // this.rateFrom = this.selectFromValue;
-      this.currencyFrom = this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text;
-      console.log('1 ', this.rateFrom, this.currencyFrom)
+      this.$store.state.rateFrom = this.selectFromValue;
+      this.$store.state.currencyFrom = this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text;
     },
 
     selectToOnChange() {
-      this.rateTo = this.selectToValue;
-      this.currencyTo = this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text;
-      console.log('2 ', this.rateTo, this.currencyTo)
+      this.$store.state.rateTo = this.selectToValue;
+      this.$store.state.currencyTo = this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text;
     },
 
     reverseCurrenciesOnClick() {
-      if (this.rateTo && this.rateFrom) {
-        [this.rateTo, this.rateFrom] = [this.rateFrom, this.rateTo];
+      if (this.$store.state.rateTo && this.$store.state.rateFrom) {
+        [
+          this.$store.state.rateTo, this.$store.state.rateFrom
+        ] = [
+            this.$store.state.rateFrom, this.$store.state.rateTo
+          ];
         [
           this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text,
           this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text,
@@ -67,10 +57,12 @@ export default {
             this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text,
             this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text,
           ];
-        [this.currencyFrom, this.currencyTo] = [
-          this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text,
-          this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text,
-        ];
+        [
+          this.$store.state.currencyFrom, this.$store.state.currencyTo
+        ] = [
+            this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text,
+            this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text,
+          ];
       } else return;
     }
   }
