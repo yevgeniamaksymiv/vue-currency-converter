@@ -14,7 +14,8 @@ export default {
   components: {
     HeaderComponent,
     CardComponent
-  }
+  },
+
 }
 </script>
 
@@ -27,32 +28,34 @@ export default {
   box-sizing: border-box;
 }
 
-/* body {
+body {
   --text-light: #c6c9d2;
   --text-blue: #0d6efd;
   --text-red: #dc3545;
   --bg-dark: #121212;
   --bg-grey: #212529;
-
-  background-color: var(--bg-dark);
-} */
+}
 
 #app {
-  --text-light: #c6c9d2;
+  /* --text-light: #c6c9d2;
   --text-blue: #0d6efd;
   --text-red: #dc3545;
   --bg-dark: #121212;
-  --bg-grey: #212529;
+  --bg-grey: #212529; */
 
   background-color: var(--bg-dark);
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
-  box-sizing: border-box;
-  /* text-align: center; */
+}
+
+.light {
+  --text-light: #212529;
+  --text-blue: #0d6efd;
+  --text-red: #dc3545;
+  --bg-dark: #f5f5f5;
+  --bg-grey: #9aa8bde3;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="card text-center mt-3 p-4">
     <div class="card-body">
-      <SelectsSection />
+      <SelectsSection ref="selects"/>
       <InputsSection />
     </div>
   </div>

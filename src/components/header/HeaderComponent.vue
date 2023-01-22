@@ -6,7 +6,7 @@
       <option selected>Select</option>
     </select>
     <BtcRate />
-    <img :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" />
+    <img  :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="changeTheme" />
     <hr />
     <RunningLine />
   </div>
@@ -42,6 +42,10 @@ export default {
   methods: {
     selectOnChange(e) {
       this.infoRateUSD = `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
+    },
+
+    changeTheme() {
+      this.imgSrc = require('@/assets/light-mode.svg')
     }
   }
 }

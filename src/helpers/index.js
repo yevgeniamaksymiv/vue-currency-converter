@@ -35,15 +35,15 @@ async function getAllCurrencies(parentTag, historyDate = null) {
     } catch (error) {
       console.error(error);
     }
-  }
+  } else {
+    try {
+      const response = await axiosInstance.get('/latest');
+      const rates = Object.entries(response.data.rates);
 
-  try {
-    const response = await axiosInstance.get('/latest');
-    const rates = Object.entries(response.data.rates);
-
-    appendOptionsToSelectTag(rates, parentTag);
-  } catch (error) {
-    console.error(error);
+      appendOptionsToSelectTag(rates, parentTag);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
@@ -80,8 +80,4 @@ function addItemToList(list, date, amount, currency1, currency2, result) {
   createListItem(uniqueId, list);
 }
 
-export { 
-  getUSDRate, 
-  getAllCurrencies,
-  addItemToList 
-}
+export { getUSDRate, getAllCurrencies, addItemToList, createListItem };

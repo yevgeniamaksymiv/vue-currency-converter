@@ -14,12 +14,19 @@
     </button>
     <small id="error-history">{{ errorMsgHistory }}</small>
     <ul id="result-list" ref="list"></ul>
-    <div id="btns-history"></div>
+    <div id="btns-history" ref="btnsHistory" :class="btnsClass">
+      <button ref="closeHistory" @click="closeHistoryOnClick" class="btn btn-outline-primary me-4">Close</button>
+      <button ref="clearHistory" @click="clearHistoryOnClick" class="btn btn-outline-danger">Clear</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { getAllCurrencies, addItemToList } from '@/helpers';
+import {
+  getAllCurrencies, 
+  addItemToList, 
+  createListItem 
+} from '@/helpers';
 
 export default {
   name: 'InputsSection',
@@ -36,6 +43,7 @@ export default {
       inputDate: '',
       errorMsgInput: '',
       errorMsgHistory: '',
+      btnsClass: 'none-btns'
     }
   },
 
@@ -53,11 +61,11 @@ export default {
     dateOnChange() {
       const date = new Date().toLocaleDateString();
       if (date.split('.').reverse().join('-') !== this.inputDate) {
-        const selectFrom = document.getElementById('select-from');
-        selectFrom.length = 1;
-        const selectTo = document.getElementById('select-to');
-        selectTo.length = 1;
-
+        const selectFrom = this.$parent.$refs.selects.$refs.selectFrom;
+        selectFrom.options.length = 1;
+        const selectTo = this.$parent.$refs.selects.$refs.selectTo;
+        selectTo.options.length = 1;
+        
         getAllCurrencies(selectFrom, this.inputDate);
         getAllCurrencies(selectTo, this.inputDate);
       }
@@ -66,9 +74,9 @@ export default {
     convertOnClick() {
       const regex = /^\d+$/;
       if (!regex.test(this.inputValue) || this.inputValue.length > 12) {
-        this.errorMsg =
+        this.errorMsgInput =
           'That is not a valid input, enter a number greater than zero and 12 symbols max';
-        setTimeout(() => (this.errorMsg = ''), 4000);
+        setTimeout(() => (this.errorMsgInput = ''), 4000);
         return;
       }
       if (this.$store.state.rateFrom && this.$store.state.rateTo) {
@@ -77,6 +85,37 @@ export default {
         addItemToList(this.$refs.list, this.inputDate, this.inputValue, this.$store.state.currencyFrom, this.$store.state.currencyTo, convertResult);
         this.inputValue = '';
       }
+    },
+
+    historyOnClick() {
+      if (Object.keys(localStorage).filter((key) => key !== 'theme').length === 0) {
+        this.errorMsgHistory = 'The history of currency conversion is empty';
+        setTimeout(() => (this.errorMsgHistory = ''), 4000);
+        return;
+      }
+
+      this.$refs.list.innerHTML = '';
+      Object.keys(localStorage).forEach((key) => {
+        if (key === 'theme') {
+          return;
+        } else {
+          createListItem(key, this.$refs.list);
+        }
+      });
+      this.btnsClass = 'block-btns';
+    },
+
+    closeHistoryOnClick() {
+      this.$refs.list.innerHTML = '';
+      this.btnsClass = 'none-btns';
+    },
+
+    clearHistoryOnClick() {
+      Object.keys(localStorage).forEach((key) =>
+        key !== 'theme' ? localStorage.removeItem(key) : key
+      );
+      this.$refs.list.innerHTML = '';
+      this.btnsClass = 'none-btns';
     }
   }
 }
@@ -132,5 +171,13 @@ ul li {
 
 small {
   color: v-bind(txtColor);
+}
+
+.none-btns {
+  display: none;
+}
+
+.block-btns {
+  display: block;
 }
 </style>
