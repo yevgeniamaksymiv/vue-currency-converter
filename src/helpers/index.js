@@ -67,9 +67,6 @@ function createListItem(id, list) {
   btnDeleteItem.onclick = () => {
     li.innerHTML = '';
     localStorage.removeItem(`${id}`);
-    // if (Object.keys(localStorage).length === 0) {
-    //   btn.remove();
-    // }
   };
 }
 

@@ -6,7 +6,7 @@
       <option selected>Select</option>
     </select>
     <BtcRate />
-    <img  :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="changeTheme" />
+    <img :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="switchTheme" />
     <hr />
     <RunningLine />
   </div>
@@ -31,21 +31,35 @@ export default {
       txtColor: 'var(--text-light)',
       infoRateUSD: 'Choose rate to USD',
       selectValue: '',
-      imgSrc: require('@/assets/dark-mode.svg')
+      imgSrc: require('@/assets/dark-mode.svg'),
+      currentTheme: localStorage.getItem('theme')
     }
   },
 
   mounted() {
-    return getUSDRate(this.$refs.select);
+    this.checkTheme();
+    getUSDRate(this.$refs.select);
   },
 
   methods: {
     selectOnChange(e) {
-      this.infoRateUSD = `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
+      this.infoRateUSD =
+        `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
     },
 
-    changeTheme() {
-      this.imgSrc = require('@/assets/light-mode.svg')
+    checkTheme() {
+      if (this.currentTheme === 'light') {
+        document.body.classList.add('light');
+        this.imgSrc = require('@/assets/light-mode.svg');
+      }
+    },
+
+    switchTheme() {
+      document.body.classList.toggle('dark');
+      if (this.currentTheme === 'light') {
+        localStorage.setItem('theme', 'dark');
+      } else localStorage.setItem('theme', 'light');
+      location.reload();
     }
   }
 }
@@ -54,6 +68,7 @@ export default {
 <style scoped>
 .content {
   background-color: v-bind(bgColor);
+  border-radius: 5px;
 }
 
 #select-header {

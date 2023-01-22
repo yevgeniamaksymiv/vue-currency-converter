@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-3 mb-2 text-white">
+  <div class="container p-3 text-white">
     <HeaderComponent />
     <CardComponent />
   </div>
@@ -14,8 +14,7 @@ export default {
   components: {
     HeaderComponent,
     CardComponent
-  },
-
+  }
 }
 </script>
 
@@ -37,17 +36,10 @@ body {
 }
 
 #app {
-  /* --text-light: #c6c9d2;
-  --text-blue: #0d6efd;
-  --text-red: #dc3545;
-  --bg-dark: #121212;
-  --bg-grey: #212529; */
-
   background-color: var(--bg-dark);
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   min-height: 100vh;
 }
 
@@ -57,5 +49,9 @@ body {
   --text-red: #dc3545;
   --bg-dark: #f5f5f5;
   --bg-grey: #9aa8bde3;
+}
+
+.container {
+  min-height: 100vh;
 }
 </style>

@@ -9,21 +9,21 @@ const store = createStore({
       currencyTo: '',
     };
   },
-  mutations: {
-    changeRateFrom(state, value) {
-      state.rateFrom = value;
-      console.log('rf', state.rateFrom)
-    },
-    changeRateTo(state, value) {
-      state.rateTo = value;
-    },
-    changeCurrFrom(state, value) {
-      state.currencyFrom = value;
-    },
-    changeCurrTo(state, value) {
-      state.currencyTo = value;
-    },
-  },
+  // mutations: {
+  //   changeRateFrom(state, value) {
+  //     state.rateFrom = value;
+  //     console.log('rf', state.rateFrom)
+  //   },
+  //   changeRateTo(state, value) {
+  //     state.rateTo = value;
+  //   },
+  //   changeCurrFrom(state, value) {
+  //     state.currencyFrom = value;
+  //   },
+  //   changeCurrTo(state, value) {
+  //     state.currencyTo = value;
+  //   },
+  // },
 });
 
 export default store;
