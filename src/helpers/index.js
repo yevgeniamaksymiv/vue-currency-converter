@@ -79,7 +79,6 @@ function addItemToList(list, date, amount, currency1, currency2, result) {
 }
 
 let chart;
-// const ctx = document.getElementById('chart').getContext('2d');
 function createChart(canvas) {
   const ctx = canvas.getContext('2d');
   chart = new Chart(ctx, {
@@ -94,13 +93,6 @@ function createChart(canvas) {
       ],
     },
     options: {
-      title: {
-        display: true,
-        text: `Exchange rate's chart`,
-        fontSize: 20,
-        fontColor: '#fff',
-        lineHeight: 1,
-      },
       legend: {
         labels: {
           boxWidth: 0,
@@ -119,13 +111,17 @@ function createChart(canvas) {
 
 async function getRatesInPeriod(start, end, currFrom, currTo) {
   try {
-    const response = await axiosInstance.get(
-      `/timeseries?start_date=${start}&end_date=${end}&base=${currFrom}&symbols=${currTo}`
-    );
+    const response = await axiosInstance.get('/timeseries', {
+      params: {
+        start_date: start,
+        end_date: end,
+        base: currFrom,
+        symbols: currTo,
+      },
+    });
 
     if (!Object.entries(response.data.rates)) {
-      console.log('no rates', response);
-      // createChart(canvas);
+      alert('No exchange rates for this period');
       chart.data.labels = [];
       chart.data.datasets[0].data = [];
       chart.data.datasets[0].label = '';
@@ -137,39 +133,28 @@ async function getRatesInPeriod(start, end, currFrom, currTo) {
       return false;
     }
 
-    const sortedResult = Object.entries(response.data.rates).sort(([key1], [key2]) => {
-      return Date.parse(key1) - Date.parse(key2);
-    });
+    const sortedResult = Object.entries(response.data.rates).sort(
+      (key1, key2) => Date.parse(key1) - Date.parse(key2)
+    );
 
     const dates = [];
     const values = [];
-    for (const [date, value] of sortedResult) {
-      dates.push(date);
-      values.push(value[currTo]);
-    }
-    console.log('rates', dates, values);
-    // createChart(canvas);
+    sortedResult.forEach(el => {
+      dates.push(el[0]);
+      values.push(el[1][currTo]);
+    });
+
     chart.data.labels = dates;
     chart.data.datasets[0].data = values;
-    chart.data.datasets[0].label = `${currFrom} to ${currTo} exchange rate`;
+    chart.data.datasets[0].label = `1 ${currFrom} to 1 ${currTo} exchange rate`;
     chart.options.legend.labels.boxWidth = 15;
 
     chart.update({
       duration: 1000,
     });
-    // const rates = Object.entries(response.data.rates);
-
   } catch (error) {
     console.error(error);
   }
-}
-
-function buildDiagram(canvas, start, end, currFrom, currTo) {
-  if (start == '' || end === '' || start > end) {
-    alert('Please, enter correct data');
-    return false;
-  }
-  getRatesInPeriod(canvas, start, end, currFrom, currTo);
 }
 
 export {
@@ -178,5 +163,5 @@ export {
   addItemToList,
   createListItem,
   createChart,
-  buildDiagram,
-};
+  getRatesInPeriod,
+}

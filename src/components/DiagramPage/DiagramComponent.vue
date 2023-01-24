@@ -17,10 +17,10 @@
       </select>
       <input id="date-to" type="date" min="2000-01-01" class="mt-3 p-2" @change="dateOnChange" ref="toDate"
         v-model="inputToDate" />
-        <button class="btn btn-outline-primary ms-4" @click="getDiagram">Show diagram</button>
+      <button class="btn btn-outline-primary ms-4" @click="getDiagram">Show diagram</button>
     </div>
     <div class="text-start p-2">
-      <small id="result">Please, fill the form above to retrieve exchange rates</small>
+      <small id="diagram-err">{{ errorMsg }}</small>
     </div>
     <div class="chart-container">
       <canvas ref="chart" id="chart"></canvas>
@@ -29,7 +29,7 @@
 </template>  
 
 <script>
-import { getAllCurrencies, buildDiagram, createChart } from '@/helpers/index';
+import { getAllCurrencies, getRatesInPeriod, createChart } from '@/helpers/index';
 
 export default {
   name: 'DiagramComponent',
@@ -40,6 +40,7 @@ export default {
       selectBgColor: 'var(--bg-dark)',
       secondaryColor: 'var(--text-blue)',
       borderColor: 'var(--text-light)',
+      errColor: 'var(--text-red)',
       inputFromDate: '',
       inputToDate: '',
       rateFrom: '',
@@ -48,6 +49,7 @@ export default {
       currencyTo: '',
       selectFromValue: '',
       selectToValue: '',
+      errorMsg: '',
     }
   },
 
@@ -70,18 +72,20 @@ export default {
     selectFromOnChange() {
       this.rateFrom = this.selectFromValue;
       this.currencyFrom = this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text;
-      console.log(this.rateFrom, this.currencyFrom)
     },
-    
+
     selectToOnChange() {
       this.rateTo = this.selectToValue;
       this.currencyTo = this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text;
-      console.log(this.rateTo, this.currencyTo)
     },
 
     getDiagram() {
-      console.log('show')
-      buildDiagram(this.$refs.chart, this.inputFromDate, this.inputToDate, this.currencyFrom, this.currencyTo)
+      if (this.inputFromDate > this.inputToDate) {
+        this.errorMsg = 'Please, enter correct dates';
+        setTimeout(() => (this.errorMsg = ''), 4000);
+        return;
+      }
+      getRatesInPeriod(this.inputFromDate, this.inputToDate, this.currencyFrom, this.currencyTo);
     }
   }
 }
@@ -127,5 +131,9 @@ input {
   width: 60vw;
   height: 30vw;
   position: relative;
+}
+
+small {
+  color: v-bind(errColor);
 }
 </style>
