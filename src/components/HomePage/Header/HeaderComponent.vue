@@ -1,12 +1,14 @@
 <template>
   <div class="content p-3 text-center">
     <h1>Currency Converter</h1>
-    <span id="header-rate" class="pe-3">{{ infoRateUSD }}</span>
-    <select id="select-header" ref="select" @change="selectOnChange" v-model="selectValue">
-      <option selected>Select</option>
-    </select>
-    <BtcRate />
-    <img :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="switchTheme" />
+      <span id="header-rate" class="pe-3">{{ infoRateUSD }}</span>
+      <select id="select-header" ref="select" @change="selectOnChange" v-model="selectValue">
+        <option selected>Select</option>
+      </select>
+      <BtcRate />
+      <img :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="switchTheme" />
+      <router-link to="/">Home</router-link>
+      <router-link to="/diagram">Diagram</router-link>
     <hr />
     <RunningLine />
   </div>
@@ -29,6 +31,7 @@ export default {
       bgColor: 'var(--bg-grey)',
       selectBgColor: 'var(--bg-dark)',
       txtColor: 'var(--text-light)',
+      linkColor: 'var(--text-blue)',
       infoRateUSD: 'Choose rate to USD',
       selectValue: '',
       imgSrc: require('@/assets/dark-mode.svg'),
@@ -84,5 +87,20 @@ select {
   border-radius: 5px;
   background-color: v-bind(selectBgColor);
   color: v-bind(txtColor);
+}
+
+a {
+  margin: 10px;
+  color: v-bind(txtColor);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: v-bind(linkColor);
+}
+
+.active {
+  color: v-bind(linkColor);
 }
 </style>

@@ -1,20 +1,12 @@
 <template>
   <div class="container p-3 text-white">
-    <HeaderComponent />
-    <CardComponent />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HeaderComponent from '@/components/header/HeaderComponent.vue';
-import CardComponent from '@/components/card/CardComponent.vue';
-
 export default {
   name: 'App',
-  components: {
-    HeaderComponent,
-    CardComponent
-  }
 }
 </script>
 

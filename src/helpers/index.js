@@ -1,4 +1,5 @@
 import axiosInstance from '@/axios-config';
+import Chart from 'chart.js/auto';
 
 function appendOptionsToSelectTag(arr2d, tag) {
   return arr2d.forEach((arr) => {
@@ -77,4 +78,105 @@ function addItemToList(list, date, amount, currency1, currency2, result) {
   createListItem(uniqueId, list);
 }
 
-export { getUSDRate, getAllCurrencies, addItemToList, createListItem };
+let chart;
+// const ctx = document.getElementById('chart').getContext('2d');
+function createChart(canvas) {
+  const ctx = canvas.getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          label: '',
+          backgroundColor: 'transparent',
+          borderColor: '#0d6efd',
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: `Exchange rate's chart`,
+        fontSize: 20,
+        fontColor: '#fff',
+        lineHeight: 1,
+      },
+      legend: {
+        labels: {
+          boxWidth: 0,
+        },
+      },
+      tooltips: {
+        intersect: false,
+        callbacks: {
+          label: (tooltipItem) => (+tooltipItem.value).toFixed(2),
+        },
+      },
+    },
+  });
+  return chart;
+}
+
+async function getRatesInPeriod(start, end, currFrom, currTo) {
+  try {
+    const response = await axiosInstance.get(
+      `/timeseries?start_date=${start}&end_date=${end}&base=${currFrom}&symbols=${currTo}`
+    );
+
+    if (!Object.entries(response.data.rates)) {
+      console.log('no rates', response);
+      // createChart(canvas);
+      chart.data.labels = [];
+      chart.data.datasets[0].data = [];
+      chart.data.datasets[0].label = '';
+      chart.options.legend.labels.boxWidth = 0;
+
+      chart.update({
+        duration: 1000,
+      });
+      return false;
+    }
+
+    const sortedResult = Object.entries(response.data.rates).sort(([key1], [key2]) => {
+      return Date.parse(key1) - Date.parse(key2);
+    });
+
+    const dates = [];
+    const values = [];
+    for (const [date, value] of sortedResult) {
+      dates.push(date);
+      values.push(value[currTo]);
+    }
+    console.log('rates', dates, values);
+    // createChart(canvas);
+    chart.data.labels = dates;
+    chart.data.datasets[0].data = values;
+    chart.data.datasets[0].label = `${currFrom} to ${currTo} exchange rate`;
+    chart.options.legend.labels.boxWidth = 15;
+
+    chart.update({
+      duration: 1000,
+    });
+    // const rates = Object.entries(response.data.rates);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function buildDiagram(canvas, start, end, currFrom, currTo) {
+  if (start == '' || end === '' || start > end) {
+    alert('Please, enter correct data');
+    return false;
+  }
+  getRatesInPeriod(canvas, start, end, currFrom, currTo);
+}
+
+export {
+  getUSDRate,
+  getAllCurrencies,
+  addItemToList,
+  createListItem,
+  createChart,
+  buildDiagram,
+};

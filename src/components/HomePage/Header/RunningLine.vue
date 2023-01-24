@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axiosInstance from '../../axios-config';
+import axiosInstance from '@/axios-config';
 
 export default {
   name: 'RunningLine',
