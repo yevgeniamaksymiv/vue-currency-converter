@@ -8,4 +8,15 @@ const axiosInstance = axios.create({
   },
 });
 
-export default axiosInstance;
+const axiosInstanceGetUsers = axios.create({
+  baseURL: 'https://fakestoreapi.com',
+  timeout: 3000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export {
+  axiosInstance,
+  axiosInstanceGetUsers
+} 

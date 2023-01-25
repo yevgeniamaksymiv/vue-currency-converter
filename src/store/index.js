@@ -9,6 +9,7 @@ const store = createStore({
       currencyTo: '',
     };
   },
+
   // mutations: {
   //   changeRateFrom(state, value) {
   //     state.rateFrom = value;

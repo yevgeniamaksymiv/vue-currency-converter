@@ -9,6 +9,7 @@
       <img :src="imgSrc" id="theme-icon" width="24" height="24" alt="theme svg" @click="switchTheme" />
       <router-link to="/">Home</router-link>
       <router-link to="/diagram">Diagram</router-link>
+      <button class="btn btn-outline-primary ms-3" @click="login">LOGIN</button>
     <hr />
     <RunningLine />
   </div>
@@ -63,6 +64,12 @@ export default {
         localStorage.setItem('theme', 'dark');
       } else localStorage.setItem('theme', 'light');
       location.reload();
+    },
+
+    login() {
+      this.$router.push({
+        name: 'login'
+      })
     }
   }
 }

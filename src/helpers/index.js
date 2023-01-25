@@ -1,4 +1,4 @@
-import axiosInstance from '@/axios-config';
+import { axiosInstance } from '@/axios-config';
 import Chart from 'chart.js/auto';
 
 function appendOptionsToSelectTag(arr2d, tag) {
