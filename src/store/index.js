@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import { axiosInstanceGetUsers } from '@/axios-config';
 
 const store = createStore({
   state() {
@@ -7,24 +8,39 @@ const store = createStore({
       rateTo: '',
       currencyFrom: '',
       currencyTo: '',
+      users: [],
+      user: {
+        username: '',
+        password: '',
+      },
     };
   },
 
-  // mutations: {
-  //   changeRateFrom(state, value) {
-  //     state.rateFrom = value;
-  //     console.log('rf', state.rateFrom)
-  //   },
-  //   changeRateTo(state, value) {
-  //     state.rateTo = value;
-  //   },
-  //   changeCurrFrom(state, value) {
-  //     state.currencyFrom = value;
-  //   },
-  //   changeCurrTo(state, value) {
-  //     state.currencyTo = value;
-  //   },
-  // },
+  mutations: {
+    setUsers(state, users) {
+      state.users = users;
+    },
+
+    setUser(state, { username, password }) {
+      state.user.username = username;
+      state.user.password = password;
+    },
+  },
+
+  actions: {
+    async getUsers() {
+      try {
+        const response = await axiosInstanceGetUsers.get('/users', {
+          params: {
+            limit: 20,
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 });
 
 export default store;

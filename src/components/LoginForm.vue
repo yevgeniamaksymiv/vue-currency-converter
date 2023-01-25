@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
-import usersStore from '@/store/users/index';
+import { mapState, mapActions } from 'vuex';
 // import { axiosInstanceGetUsers } from '@/axios-config';
 
 export default {
@@ -42,12 +41,12 @@ export default {
   },
 
   computed: {
-    ...mapState(usersStore, ['users', 'user'])
+    ...mapState(['users', 'user'])
   }, 
 
   methods: {
-    ...mapActions(usersStore, ['getUsers']),
-    ...mapMutations(usersStore, ['setUsers', 'setUser']),
+    ...mapActions(['getUsers']),
+    // ...mapMutations(usersStore, ['setUsers', 'setUser']),
 
     showPassword() {
       if (this.inputType === 'password') {
