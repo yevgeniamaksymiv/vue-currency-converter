@@ -7,13 +7,14 @@
 
         <div class="form-outline mb-4">
           <input type="text" class="form-control form-control-lg" placeholder="Username" v-model="username" />
+          <small v-if="v$.username.$error">{{ v$.username.$errors[0].$message }}</small>
         </div>
-
+        
         <div class="form-outline mb-4">
           <input :type="inputType" class="form-control form-control-lg" placeholder="Password" v-model="password" />
           <img class="visibility-icon" :src="imgSrc" width="16" height="16" @click="showPassword" />
+          <small v-if="v$.password.$error">{{ v$.password.$errors[0].$message }}</small>
         </div>
-
         <div class="pt-1 mb-4">
           <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
         </div>
@@ -24,18 +25,21 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import useValidate from '@vuelidate/core';
+import { required, minLength } from '@vuelidate/validators';
 
 export default {
   name: 'LoginForm',
   data() {
     return {
+      v$: useValidate(),
       bgColor: 'var(--bg-dark)',
       bgColorDel: 'var(--bg-grey)',
       borderColor: 'var(--text-light)',
       imgSrc: require('@/assets/visibility.svg'),
       inputType: 'password',
       username: '',
-      password: ''
+      password: '',
     }
   },
 
@@ -57,6 +61,12 @@ export default {
     },
 
     submitForm() {
+      this.v$.$validate();
+      if (this.v$.$error) {
+        alert('Form failed validation');
+        return;
+      } 
+
       const userData = {
         'username': this.username,
         'password': this.password
@@ -67,12 +77,22 @@ export default {
 
         if (this.isLogin === true) {
           this.$router.push({name: 'diagram'});
-        } else this.$router.push({ name: 'home' });
+        } else {
+          alert('You are not a registered user');
+          this.$router.push({ name: 'home' });
+        };
     }
   },
 
   mounted() {
     this.getUsers();
+  },
+
+  validations() {
+    return {
+      username: { required, minLength: minLength(4) },
+      password: { required, minLength: minLength(4) }
+    }
   }
 }
 </script>
@@ -96,5 +116,9 @@ input::placeholder {
   margin-top: -30px;
   position: relative;
   z-index: 2;
+}
+
+small {
+  color: #dc3545;
 }
 </style>
