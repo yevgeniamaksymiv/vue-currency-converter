@@ -37,15 +37,15 @@ const store = createStore({
   },
 
   actions: {
-    async getUsers({commit}, data) {
+    async getUsers({commit}) {
       try {
         const response = await axiosInstanceGetUsers.get('/users', {
           params: {
             limit: 20,
           },
         });
-        data = response.data;
-        commit('setUsers', data);
+        
+        commit('setUsers', response.data);
         console.log('users', this.state.users);
       } catch (error) {
         console.log(error);
