@@ -20,29 +20,40 @@ const store = createStore({
     isLogin: (state) => state.isLogin,
   },
 
+  mutations: {
+    checkUser(state, { username, password }) {
+      const checkData = state.users.find((user) => {
+        return user.username === username && user.password === password;
+      });
+      if (checkData) {
+        state.user = username;
+        state.isLogin = true;
+      } else state.isLogin = false;
+    },
+
+    setUsers(state, data) {
+      state.users = data;
+    }
+  },
+
   actions: {
-    async getUsers() {
+    async getUsers({commit}, data) {
       try {
         const response = await axiosInstanceGetUsers.get('/users', {
           params: {
             limit: 20,
           },
         });
-        this.state.users = response.data;
+        data = response.data;
+        commit('setUsers', data);
         console.log('users', this.state.users);
       } catch (error) {
         console.log(error);
       }
     },
 
-    checkUser(state, { username, password }) {
-      const checkData = this.state.users.find((user) => {
-        return user.username === username && user.password === password;
-      });
-      if (checkData) {
-        this.state.user = username;
-        this.state.isLogin = true;
-      } else this.state.isLogin = false;
+    checkUser({commit}, user) {
+      commit('checkUser', user);
     },
   },
 });
