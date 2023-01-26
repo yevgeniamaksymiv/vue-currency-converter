@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '@/components/HomePage/HomeComponent.vue';
+import store from '@/store/index';
 
 const routes = [
   {
@@ -40,9 +41,7 @@ const routes = [
 
   router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-    // const store = useAuthStore();
-    // console.log(store.user);
-    if (requiresAuth) {
+    if (requiresAuth && !store.state.isLogin) {
       next('/login');
     } else {
       next();

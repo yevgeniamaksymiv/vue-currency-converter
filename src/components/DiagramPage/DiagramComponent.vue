@@ -1,6 +1,13 @@
 <template>
   <div class="content p-3">
-    <h2 class="text-center">Diagram</h2>
+    <div class="d-flex justify-content-between align-items-baseline">
+      <button class="btn btn-outline-primary" @click="backHome">
+        <img src="../../assets/arrow-back.svg" width="20" height="20" />
+        Home
+      </button>
+      <h3 class="text-center">Diagram</h3>
+      <p class="pe-3">Welcome,  <span>{{ this.user }}</span></p>
+    </div>
     <hr />
     <div class="section">
       <span class="pe-4">From</span>
@@ -30,6 +37,7 @@
 
 <script>
 import { getAllCurrencies, getRatesInPeriod, createChart } from '@/helpers/index';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DiagramComponent',
@@ -60,7 +68,15 @@ export default {
     createChart(this.$refs.chart);
   },
 
+  computed: {
+    ...mapGetters(['user'])
+  },
+
   methods: {
+    backHome() {
+      this.$router.push({name: 'home'});
+    },
+
     setCurrentDate() {
       const date = new Date().toLocaleDateString().split('.').reverse().join('-');
       this.inputFromDate = date;
@@ -98,6 +114,11 @@ export default {
   border-radius: 5px;
   min-height: 95vh;
 }
+
+h3, p {
+  display: inline-block;
+}
+
 
 select {
   width: 100px;

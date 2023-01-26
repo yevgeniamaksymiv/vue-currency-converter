@@ -6,16 +6,16 @@
         <h5 class="fw-normal mb-3 pb-3 text-primary" style="letter-spacing: 1px;">Sign into your account</h5>
 
         <div class="form-outline mb-4">
-          <input type="text" class="form-control form-control-lg" placeholder="Username" v-model="username"/>
+          <input type="text" class="form-control form-control-lg" placeholder="Username" v-model="username" />
         </div>
 
         <div class="form-outline mb-4">
-          <input :type="inputType" class="form-control form-control-lg" placeholder="Password" v-model="password"/>
-          <img class="visibility-icon" :src="imgSrc" width="16" height="16" @click="showPassword"/>
+          <input :type="inputType" class="form-control form-control-lg" placeholder="Password" v-model="password" />
+          <img class="visibility-icon" :src="imgSrc" width="16" height="16" @click="showPassword" />
         </div>
 
         <div class="pt-1 mb-4">
-          <button class="btn btn-primary btn-lg btn-block" type="button">Login</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
         </div>
       </form>
     </div>
@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-// import { axiosInstanceGetUsers } from '@/axios-config';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'LoginForm',
@@ -41,12 +40,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['users', 'user'])
-  }, 
+    ...mapGetters(['isLogin'])
+  },
 
   methods: {
-    ...mapActions(['getUsers']),
-    // ...mapMutations(usersStore, ['setUsers', 'setUser']),
+    ...mapActions(['getUsers', 'checkUser']),
 
     showPassword() {
       if (this.inputType === 'password') {
@@ -63,24 +61,18 @@ export default {
         'username': this.username,
         'password': this.password
       }
-      console.log(userData)
+      if (this.username.length !== 0 && this.password.length !== 0) {
+        this.checkUser(userData);
+      }
 
+        if (this.isLogin === true) {
+          this.$router.push({name: 'diagram'});
+        } else this.$router.push({ name: 'home' });
     }
   },
 
   mounted() {
     this.getUsers();
-    // console.log(this.users)
-//     try {
-//       const response = await axiosInstanceGetUsers.get('/users', {
-//         params: {
-//           limit: 20,
-//         },
-//       });
-//       console.log(response.data[0].username);
-//     } catch (error) {
-//       console.log(error);
-//   }
   }
 }
 </script>

@@ -9,22 +9,15 @@ const store = createStore({
       currencyFrom: '',
       currencyTo: '',
       users: [],
-      user: {
-        username: '',
-        password: '',
-      },
+      user: '',
+      isLogin: false,
     };
   },
 
-  mutations: {
-    setUsers(state, users) {
-      state.users = users;
-    },
-
-    setUser(state, { username, password }) {
-      state.user.username = username;
-      state.user.password = password;
-    },
+  getters: {
+    users: (state) => state.users,
+    user: (state) => state.user,
+    isLogin: (state) => state.isLogin,
   },
 
   actions: {
@@ -35,10 +28,21 @@ const store = createStore({
             limit: 20,
           },
         });
-        console.log(response.data);
+        this.state.users = response.data;
+        console.log('users', this.state.users);
       } catch (error) {
         console.log(error);
       }
+    },
+
+    checkUser(state, { username, password }) {
+      const checkData = this.state.users.find((user) => {
+        return user.username === username && user.password === password;
+      });
+      if (checkData) {
+        this.state.user = username;
+        this.state.isLogin = true;
+      } else this.state.isLogin = false;
     },
   },
 });
