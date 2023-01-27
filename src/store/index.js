@@ -1,7 +1,13 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import { axiosInstanceGetUsers } from '@/axios-config';
 
 const store = createStore({
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+    }),
+  ],
   state() {
     return {
       rateFrom: '',
@@ -56,7 +62,7 @@ const store = createStore({
 
     setIsLogin({ commit }, bool) {
       commit('setIsLogin', bool);
-    }
+    },
   },
 });
 
