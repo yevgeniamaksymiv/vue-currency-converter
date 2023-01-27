@@ -9,7 +9,7 @@
           <input type="text" class="form-control form-control-lg" placeholder="Username" v-model="username" />
           <small v-if="v$.username.$error">{{ v$.username.$errors[0].$message }}</small>
         </div>
-        
+
         <div class="form-outline mb-4">
           <input :type="inputType" class="form-control form-control-lg" placeholder="Password" v-model="password" />
           <img class="visibility-icon" :src="imgSrc" width="16" height="16" @click="showPassword" />
@@ -44,11 +44,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isLogin'])
+    ...mapGetters(['users', 'user', 'isLogin'])
   },
 
   methods: {
-    ...mapActions(['getUsers', 'checkUser']),
+    ...mapActions(['getUsers', 'setUser', 'setIsLogin']),
 
     showPassword() {
       if (this.inputType === 'password') {
@@ -65,22 +65,29 @@ export default {
       if (this.v$.$error) {
         alert('Form failed validation');
         return;
-      } 
+      }
 
       const userData = {
         'username': this.username,
         'password': this.password
       }
-      if (this.username.length !== 0 && this.password.length !== 0) {
-        this.checkUser(userData);
+      if (this.username.length !== 0 && this.password.length !== 0 && this.users.length !== 0) {
+        const checkData = this.users.find((user) => {
+          return user.username === this.username && user.password === this.password;
+        });
+
+        if (checkData) {
+          this.setUser(this.username);
+          this.setIsLogin(true);
+        } else this.setIsLogin(false)
       }
 
-        if (this.isLogin === true) {
-          this.$router.push({name: 'diagram'});
-        } else {
-          alert('You are not a registered user');
-          this.$router.push({ name: 'home' });
-        };
+      if (this.isLogin === true) {
+        this.$router.push({ name: 'diagram' });
+      } else {
+        alert('You are not a registered user');
+        this.$router.push({ name: 'home' });
+      };
     }
   },
 

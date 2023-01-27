@@ -43,6 +43,7 @@ export default {
   mounted() {
     this.checkTheme();
     getUSDRate(this.$refs.select);
+    console.log('user', this.$store.state.user)
   },
 
   methods: {
