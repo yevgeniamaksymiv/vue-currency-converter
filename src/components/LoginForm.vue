@@ -67,10 +67,6 @@ export default {
         return;
       }
 
-      const userData = {
-        'username': this.username,
-        'password': this.password
-      }
       if (this.username.length !== 0 && this.password.length !== 0 && this.users.length !== 0) {
         const checkData = this.users.find((user) => {
           return user.username === this.username && user.password === this.password;
@@ -87,7 +83,7 @@ export default {
       } else {
         alert('You are not a registered user');
         this.$router.push({ name: 'home' });
-      };
+      }
     }
   },
 
