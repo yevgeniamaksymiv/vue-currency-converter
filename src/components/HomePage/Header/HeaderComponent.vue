@@ -11,8 +11,8 @@
     <router-link to="/diagram">Diagram</router-link>
     <button class="btn btn-outline-primary ms-3" @click="login">LOGIN</button>
     <button class="btn btn-outline-secondary ms-3" @click="logout">LOGOUT</button>
-    <div :class="imgLogin">
-      <img src="../../../assets/face-login.svg" width="32" height="32" /><br />
+    <div v-if="this.isLogin" class="img-login">
+      <img src="../../../assets/face-login.svg" width="32" height="32" alt="login svg"/><br />
       <small>{{ this.user }}</small>
     </div>
     <p>{{ logoutMsg }}</p>
@@ -45,7 +45,6 @@ export default {
       imgSrc: require('@/assets/dark-mode.svg'),
       currentTheme: localStorage.getItem('theme'),
       logoutMsg: '',
-      imgLogin: 'img-login-none'
     }
   },
 
@@ -90,16 +89,15 @@ export default {
 
     logout() {
       window.sessionStorage.clear();
-      this.imgLogin = 'img-login-none';
       this.logoutMsg = 'You left your account';
       setTimeout(() => (this.logoutMsg = ''), 3000);
-      setTimeout(() => location.reload(), 2000);
+      setTimeout(() => location.reload(), 1000);
 
     }
   },
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'isLogin'])
   }
 }
 </script>
@@ -140,11 +138,7 @@ a:hover {
   color: v-bind(linkColor);
 }
 
-.img-login-none {
-  display: none;
-}
-
-.img-login-block {
+.img-login {
   display: inline-block;
   margin: 0 15px;
 }
