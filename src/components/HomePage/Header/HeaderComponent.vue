@@ -25,7 +25,7 @@
 import RunningLine from './RunningLine.vue';
 import BtcRate from './BtcRate.vue';
 import { getUSDRate } from '@/helpers/index';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'HeaderComponent',
@@ -55,6 +55,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setUser', 'setIsLogin']),
     selectOnChange(e) {
       this.infoRateUSD =
         `1 USD = ${this.selectValue} ${e.target.options[e.target.options.selectedIndex].text}`;
@@ -89,10 +90,10 @@ export default {
 
     logout() {
       window.sessionStorage.clear();
+      this.setUser('');
+      this.setIsLogin(false);
       this.logoutMsg = 'You left your account';
       setTimeout(() => (this.logoutMsg = ''), 3000);
-      setTimeout(() => location.reload(), 1000);
-
     }
   },
 
