@@ -13,6 +13,7 @@
 
 <script>
 import { getAllCurrencies } from '@/helpers/index';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'SelectsSection',
@@ -32,15 +33,21 @@ export default {
     getAllCurrencies(this.$refs.selectTo);
   },
 
+  computed: {
+    ...mapGetters(['rateFrom', 'rateTo', 'currencyFrom', 'currencyTo'])
+  },
+
   methods: {
+    ...mapActions(['setRateFrom', 'setRateTo', 'setCurrFrom', 'setCurrTo']),
+
     selectFromOnChange() {
-      this.$store.state.rateFrom = this.selectFromValue;
-      this.$store.state.currencyFrom = this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text;
+      this.setRateFrom(this.selectFromValue);
+      this.setCurrFrom(this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text);
     },
 
     selectToOnChange() {
-      this.$store.state.rateTo = this.selectToValue;
-      this.$store.state.currencyTo = this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text;
+      this.setRateTo(this.selectToValue);
+      this.setCurrTo(this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text);
     },
 
     reverseCurrenciesOnClick() {
@@ -63,7 +70,8 @@ export default {
             this.$refs.selectFrom.options[this.$refs.selectFrom.selectedIndex].text,
             this.$refs.selectTo.options[this.$refs.selectTo.selectedIndex].text,
           ];
-      } else return;
+      }
+      else return;
     }
   }
 }
